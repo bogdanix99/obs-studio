@@ -2,9 +2,14 @@
 
 #include "OAuth.hpp"
 
-inline const std::vector<Auth::Def> youtubeServices = {{"YouTube - RTMP", Auth::Type::OAuth_LinkedAccount, true, true},
-						       {"YouTube - RTMPS", Auth::Type::OAuth_LinkedAccount, true, true},
-						       {"YouTube - HLS", Auth::Type::OAuth_LinkedAccount, true, true}};
+inline const std::vector<Auth::Def> youtubeServices = {{"YouTube - RTMP", Auth::Type::OAuth_StreamKey, true, true},
+						       {"YouTube - RTMPS", Auth::Type::OAuth_StreamKey, true, true},
+						       {"YouTube - HLS", Auth::Type::OAuth_StreamKey, true, true}};
+
+inline Auth::Type AuthAvailable(const std::string & = "")
+{
+	return Auth::Type::OAuth_StreamKey;
+}
 
 #ifdef BROWSER_AVAILABLE
 class YoutubeChatDock;

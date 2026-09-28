@@ -417,7 +417,12 @@ void AutoConfigStreamPage::reset_service_ui_fields(std::string &service)
 #endif
 
 	bool external_oauth = is_external_oauth(service);
-	if (external_oauth) {
+#ifdef YOUTUBE_ENABLED
+	bool is_yt = IsYouTubeService(service);
+#else
+	bool is_yt = false;
+#endif
+	if (external_oauth || is_yt) {
 		ui->streamKeyWidget->setVisible(false);
 		ui->streamKeyLabel->setVisible(false);
 		ui->connectAccount2->setVisible(true);

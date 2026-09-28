@@ -525,7 +525,13 @@ static inline bool is_external_oauth(const std::string &service)
 static void reset_service_ui_fields(Ui::OBSBasicSettings *ui, std::string &service, bool loading)
 {
 	bool external_oauth = is_external_oauth(service);
-	if (external_oauth) {
+#ifdef YOUTUBE_ENABLED
+	bool is_yt = IsYouTubeService(service);
+#else
+	bool is_yt = false;
+#endif
+
+	if (external_oauth || is_yt) {
 		ui->streamKeyWidget->setVisible(false);
 		ui->streamKeyLabel->setVisible(false);
 		ui->connectAccount2->setVisible(true);

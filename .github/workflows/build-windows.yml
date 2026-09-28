@@ -1,0 +1,63 @@
+name: Build OBS Studio Windows (x64)
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    name: Build & Package Windows (x64)
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Install Inno Setup
+        run: |
+          choco install innosetup --no-progress
+          $innoPath = "C:\Program Files (x86)\Inno Setup 6"
+          if (Test-Path $innoPath) {
+            Write-Host "Adding Inno Setup to PATH: $innoPath"
+            "$innoPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          }
+
+      - name: Configure CMake
+        run: |
+          cmake -B build_x64 -A x64 `
+            -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+            -DENABLE_BROWSER=ON `
+            -DENABLE_CORE_MODULES=ON `
+            -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/build_x64/install" `
+            -DYOUTUBE_CLIENTID="502758197176-v10ff4h26m1p8s7d8p5q6p0e6l2a7s0r.apps.googleusercontent.com" `
+            -DYOUTUBE_CLIENTID_HASH=0 `
+            -DYOUTUBE_SECRET="" `
+            -DYOUTUBE_SECRET_HASH=0
+
+      - name: Build OBS Studio
+        run: |
+          cmake --build build_x64 --config RelWithDebInfo --parallel
+
+      - name: Install (Stage files)
+        run: |
+          cmake --install build_x64 --config RelWithDebInfo --prefix "${{ github.workspace }}/build_x64/install"
+
+      - name: Build Inno Setup Installer
+        run: |
+          New-Item -ItemType Directory -Force -Path "${{ github.workspace }}/installer_output"
+          & iscc .github/installer/obs-setup.iss
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OBS-Studio-Windows-x64-Installer
+          path: installer_output/*.exe
+          if-no-files-found: error
