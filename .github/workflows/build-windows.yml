@@ -42,9 +42,9 @@ jobs:
             -DENABLE_BROWSER=ON `
             -DENABLE_CORE_MODULES=ON `
             -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/build_x64/install" `
-            -DYOUTUBE_CLIENTID="502758197176-v10ff4h26m1p8s7d8p5q6p0e6l2a7s0r.apps.googleusercontent.com" `
+            -DYOUTUBE_CLIENTID="111793709140-1l5ms0nh204r8rd5lvb3pp4sl1eq6206.apps.googleusercontent.com" `
             -DYOUTUBE_CLIENTID_HASH=0 `
-            -DYOUTUBE_SECRET="" `
+            -DYOUTUBE_SECRET="4mQ8FST_7u0Aa5dkCIY2oS4Z" `
             -DYOUTUBE_SECRET_HASH=0
 
       - name: Build OBS Studio
