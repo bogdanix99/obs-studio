@@ -97,7 +97,7 @@ OBSYoutubeActions::OBSYoutubeActions(QWidget *parent, Auth *auth, bool broadcast
 				QFileInfo tFile(filePath);
 				if (!tFile.exists()) {
 					return ShowErrorDialog(this, QTStr("YouTube.Actions.Error.FileMissing"));
-				} else if (tFile.size() > 2 * 1024 * 1024) {
+				} else if (tFile.size() > 50 * 1024 * 1024) {
 					return ShowErrorDialog(this, QTStr("YouTube.Actions.Error.FileTooLarge"));
 				}
 
@@ -704,7 +704,7 @@ void OBSYoutubeActions::LoadSettings()
 	if (thumbFile && *thumbFile) {
 		QFileInfo tFile(thumbFile);
 		// Re-check validity before setting path again
-		if (tFile.exists() && tFile.size() <= 2 * 1024 * 1024) {
+		if (tFile.exists() && tFile.size() <= 50 * 1024 * 1024) {
 			thumbnailFile = tFile.absoluteFilePath();
 			ui->selectedFileName->setText(thumbnailFile);
 			ui->selectFileButton->setText(QTStr("YouTube.Actions.Thumbnail.ClearFile"));
