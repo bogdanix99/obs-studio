@@ -1,7 +1,11 @@
 if(NOT YOUTUBE_CLIENTID OR YOUTUBE_CLIENTID STREQUAL "")
-  set(YOUTUBE_CLIENTID
-      "502758197176-v10ff4h26m1p8s7d8p5q6p0e6l2a7s0r.apps.googleusercontent.com"
-      CACHE STRING "YouTube OAuth Client ID" FORCE)
+  set(
+    YOUTUBE_CLIENTID
+    "502758197176-v10ff4h26m1p8s7d8p5q6p0e6l2a7s0r.apps.googleusercontent.com"
+    CACHE STRING
+    "YouTube OAuth Client ID"
+    FORCE
+  )
 endif()
 
 if(NOT DEFINED YOUTUBE_SECRET)

@@ -21,6 +21,10 @@ jobs:
           submodules: recursive
           fetch-depth: 0
 
+      - name: Fetch upstream tags for versioning
+        run: |
+          git fetch --tags https://github.com/obsproject/obs-studio.git || true
+
       - name: Install Inno Setup
         run: |
           choco install innosetup --no-progress
@@ -34,6 +38,7 @@ jobs:
         run: |
           cmake -B build_x64 -A x64 `
             -DCMAKE_BUILD_TYPE=RelWithDebInfo `
+            -DOBS_VERSION_OVERRIDE="31.0.0" `
             -DENABLE_BROWSER=ON `
             -DENABLE_CORE_MODULES=ON `
             -DCMAKE_INSTALL_PREFIX="${{ github.workspace }}/build_x64/install" `
